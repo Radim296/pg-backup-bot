@@ -27,26 +27,7 @@ Also, you will need:
 
 ## Setup Instructions 🚀
 
-1. **Clone the repository**
-
-    First, clone this repository to your local machine or server where you wish to run the backup service.
-
-2. **Configure Environment Variables**
-
-    Create a `.env` file in the project root directory. Populate it with the necessary environment variables:
-
-    ```
-    DB_HOST=your_database_host
-    DB_USER=your_database_user
-    DB_PASSWORD=your_database_password
-    DB_NAME=your_database_name
-    TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-    CHAT_ID=your_telegram_chat_id
-    ```
-
-    Make sure to replace the placeholders with your actual database details and Telegram bot information.
-
-3. **Setup Docker Compose**
+1. **Setup Docker Compose**
 
     Within the project's root, create a `docker-compose.yml` file with the following content:
 
@@ -54,21 +35,22 @@ Also, you will need:
     version: '3.8'
     services:
       backup_bot:
-        build: .
+        build: https://github.com/Radim296/pg-backup-bot.git
         environment:
-          - DB_HOST=${DB_HOST}
-          - DB_USER=${DB_USER}
-          - DB_PASSWORD=${DB_PASSWORD}
-          - DB_NAME=${DB_NAME}
-          - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-          - CHAT_ID=${CHAT_ID}
-        volumes:
-          - ./backup_script.sh:/usr/src/app/backup_script.sh
+          - DB_HOST=
+          - DB_USER=
+          - DB_PASSWORD=
+          - DB_NAME=
+          - CHAT_ID=
+          - TELEGRAM_BOT_TOKEN=
+          # optional variables (below)
+          - MESSAGE_THREAD_ID=
+          - TIME_TO_SEND=00:00 - default is midnight
     ```
 
     This file instructs Docker Compose on how to build and run the service, passing in the necessary environment variables and mapping the backup script into the container.
 
-4. **Build and Run**
+2. **Build and Run**
 
     Execute the following command to build and start the backup bot:
 
