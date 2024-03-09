@@ -7,15 +7,15 @@ from dotenv import find_dotenv, load_dotenv
 load_dotenv(dotenv_path=find_dotenv())
 
 class DBConfiguration:
-    DB_NAME: str = os.getenv("DB_NAME")
-    DB_USER: str = os.getenv("DB_USER")
-    DB_PASSWORD: str = os.getenv("DB_PASSWORD")
-    DB_HOST: str = os.getenv("DB_HOST")
-    DB_PORT: int = os.getenv("DB_PORT")
+    NAME: str = os.getenv("POSTGRES_DB")
+    USER: str = os.getenv("POSTGRES_USER")
+    PASSWORD: str = os.getenv("POSTGRES_PASSWORD")
+    HOST: str = os.getenv("POSTGRES_HOST")
+    PORT: int = os.getenv("POSTGRES_PORT")
 
     def __init__(self) -> None:
         if not all(
-            [self.DB_NAME, self.DB_USER, self.DB_PASSWORD, self.DB_HOST, self.DB_PORT]
+            [self.NAME, self.USER, self.PASSWORD, self.HOST, self.PORT]
         ):
             raise ValueError("Invalid database configuration")
 

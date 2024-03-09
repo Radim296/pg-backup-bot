@@ -13,15 +13,15 @@ async def is_postgresql_db_alive(db_config: DBConfiguration):
     try:
         # Attempt to create a connection to the PostgreSQL database
         connection = await asyncpg.connect(
-            user=db_config.DB_USER,
-            password=db_config.DB_PASSWORD,
-            host=db_config.DB_HOST,
-            port=db_config.DB_PORT,
-            database=db_config.DB_NAME,
+            user=db_config.USER,
+            password=db_config.PASSWORD,
+            host=db_config.HOST,
+            port=db_config.PORT,
+            database=db_config.NAME,
         )
         await connection.execute("SELECT version();")
         print(
-            f"Successfully connected to {db_config.DB_NAME} on {db_config.DB_HOST}:{db_config.DB_PORT}"
+            f"Successfully connected to {db_config.NAME} on {db_config.HOST}:{db_config.PORT}"
         )
         return True
     except Exception as e:
@@ -43,9 +43,9 @@ async def get_database_backup(db_config: DBConfiguration) -> bytes:
     backup_path: str = os.path.join("/tmp", backup_filename)
 
     # Execute pg_dump command
-    command: str = f"pg_dump -h {db_config.DB_HOST} -U {db_config.DB_USER} -w {db_config.DB_NAME} -p {db_config.DB_PORT} > {backup_path}"
+    command: str = f"pg_dump -h {db_config.HOST} -U {db_config.USER} -w {db_config.NAME} -p {db_config.PORT} > {backup_path}"
     env: Dict[str, str] = os.environ.copy()
-    env["PGPASSWORD"] = db_config.DB_PASSWORD
+    env["PGPASSWORD"] = db_config.PASSWORD
     subprocess.run(command, shell=True, env=env, check=True)
 
     backup_bytes: bytes = open(backup_path).read().encode()
