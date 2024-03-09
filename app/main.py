@@ -63,11 +63,11 @@ async def start_bot():
     scheduler: AsyncIOScheduler = get_scheduler(config=config)
     bot: Bot = Bot(token=config.telegram.BOT_TOKEN, parse_mode=ParseMode.HTML)
 
-    # await bot.send_message(
-    #     chat_id=config.telegram.CHAT_ID,
-    #     message_thread_id=config.telegram.MESSAGE_THREAD_ID,
-    #     text=f"👨‍🔧 <b>Backup Service Started </b>({datetime.datetime.now().isoformat()})",
-    # )
+    await bot.send_message(
+        chat_id=config.telegram.CHAT_ID,
+        message_thread_id=config.telegram.MESSAGE_THREAD_ID,
+        text=f"👨‍🔧 <b>Backup Service Started </b>({datetime.datetime.now().isoformat()})",
+    )
 
     await check_database_connection(config=config, bot=bot)
     schedule_jobs(scheduler=scheduler, config=config)
