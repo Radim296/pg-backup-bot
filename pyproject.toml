@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pg-backup-bot"
+version = "0.1.0"
+description = ""
+authors = ["Radim <58228032+Radim296@users.noreply.github.com>"]
+readme = "README.md"
+packages = []
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiogram = "^3.4.1"
+apscheduler = "^3.10.4"
+python-dotenv = "^1.0.1"
+psycopg2-binary = "^2.9.9"
+asyncpg = "^0.29.0"
+sqlalchemy = "^2.0.28"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
