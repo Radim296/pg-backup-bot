@@ -4,7 +4,7 @@ import datetime
 
 from dotenv import find_dotenv, load_dotenv
 
-load_dotenv(dotenv_path=find_dotenv(raise_error_if_not_found=True))
+load_dotenv(dotenv_path=find_dotenv())
 
 class DBConfiguration:
     DB_NAME: str = os.getenv("DB_NAME")

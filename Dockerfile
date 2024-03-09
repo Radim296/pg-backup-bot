@@ -26,4 +26,4 @@ RUN poetry
 
 COPY . .
 
-CMD ["python", "app/main.py"]
+CMD ["python", "app.py"]
