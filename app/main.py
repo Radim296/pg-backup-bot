@@ -2,13 +2,14 @@ import asyncio
 import datetime
 import logging
 from operator import le
-from typing import Optional
+from typing import Optional, Union
 
 from aiogram import Bot
 from aiogram.enums.parse_mode import ParseMode
 from apscheduler.executors.asyncio import AsyncIOExecutor
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.job import Job
 
@@ -32,26 +33,37 @@ def get_scheduler(config: Configuration) -> AsyncIOScheduler:
     return scheduler
 
 
+def get_scheduler_trigger(config: Configuration) -> Union[CronTrigger, IntervalTrigger]:
+    if config.scheduler.INTERVAL:
+        if config.scheduler.isidigit():
+            return IntervalTrigger(
+                minutes=int(config.scheduler.INTERVAL),
+                start_date=datetime.datetime.now(),
+            )
+    elif config.scheduler.TIME_TO_SEND:
+        return CronTrigger(
+            hour=config.scheduler.TIME_TO_SEND.hour,
+            minute=config.scheduler.TIME_TO_SEND.minute,
+            start_date=datetime.datetime.now(),
+        )
+    else:
+        return CronTrigger(
+            hour=0,
+            minute=0,
+            start_date=datetime.datetime.now(),
+        )
+
+
 def schedule_jobs(scheduler: AsyncIOScheduler, config: Configuration) -> None:
     job: Optional[Job] = scheduler.get_job(config.scheduler.JOB_ID)
 
     if job:
-        if (
-            datetime.time(hour=job.next_run_time.hour, minute=job.next_run_time.minute)
-            != config.scheduler.TIME_TO_SEND
-        ):
-            job.remove()
-        else:
-            return
+        job.remove()
 
     scheduler.add_job(
         send_db_backup,
-        trigger=CronTrigger(
-            hour=config.scheduler.TIME_TO_SEND.hour,
-            minute=config.scheduler.TIME_TO_SEND.minute,
-            start_date=datetime.datetime.now(),
-        ),
         kwargs={"config": config},
+        trigger=get_scheduler_trigger(config=config),
         name=config.scheduler.JOB_NAME,
         id=config.scheduler.JOB_ID,
     )

@@ -6,6 +6,7 @@ from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(dotenv_path=find_dotenv())
 
+
 class DBConfiguration:
     NAME: str = os.getenv("POSTGRES_DB")
     USER: str = os.getenv("POSTGRES_USER")
@@ -14,9 +15,7 @@ class DBConfiguration:
     PORT: int = os.getenv("POSTGRES_PORT")
 
     def __init__(self) -> None:
-        if not all(
-            [self.NAME, self.USER, self.PASSWORD, self.HOST, self.PORT]
-        ):
+        if not all([self.NAME, self.USER, self.PASSWORD, self.HOST, self.PORT]):
             raise ValueError("Invalid database configuration")
 
 
@@ -31,9 +30,8 @@ class TelegramConfiguration:
 
 
 class SchedulerConfiguration:
-    TIME_TO_SEND: datetime.time = datetime.datetime.strptime(
-        os.getenv("TIME_TO_SEND") or "00:00", "%H:%M"
-    ).time()
+    TIME_TO_SEND: Optional[datetime.time] = os.getenv("TIME_TO_SEND")
+    INTERVAL: Optional[str] = os.getenv("INTERVAL")
     JOB_NAME: str = "db_backup_job_name"
     JOB_ID: str = "db_backup_job_id"
     TASK_DATABASE_PATH: str = "sqlite:///jobs.sqlite"

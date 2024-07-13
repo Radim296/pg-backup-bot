@@ -43,9 +43,13 @@ Also, you will need:
           - DB_NAME=
           - CHAT_ID=
           - TELEGRAM_BOT_TOKEN=
-          # optional variables (below)
+
+          # configuring the time (you can set one of the following options)
+          - TIME_TO_SEND=00:00 # hour:minute in 24h format
+          - INTERVAL=100 # minutes
+
+          # optional variables
           - MESSAGE_THREAD_ID=
-          - TIME_TO_SEND=00:00 - default is midnight
     ```
 
     This file instructs Docker Compose on how to build and run the service, passing in the necessary environment variables and mapping the backup script into the container.
