@@ -35,7 +35,7 @@ def get_scheduler(config: Configuration) -> AsyncIOScheduler:
 
 def get_scheduler_trigger(config: Configuration) -> Union[CronTrigger, IntervalTrigger]:
     if config.scheduler.INTERVAL:
-        if config.scheduler.isidigit():
+        if config.scheduler.INTERVAL.isidigit():
             return IntervalTrigger(
                 minutes=int(config.scheduler.INTERVAL),
                 start_date=datetime.datetime.now(),
