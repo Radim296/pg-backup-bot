@@ -23,7 +23,7 @@ class TelegramConfiguration:
     BOT_TOKEN: str = os.getenv("TELEGRAM_TOKEN")
     CHAT_ID: Union[str, int] = os.getenv("CHAT_ID")
     MESSAGE_THREAD_ID: Optional[int] = os.getenv("MESSAGE_THREAD_ID")
-
+    LOGGING: bool = bool(os.getenv("LOGGING", 0))
     def __init__(self) -> None:
         if not all([self.BOT_TOKEN, self.CHAT_ID]):
             raise ValueError("Invalid telegram configuration")
