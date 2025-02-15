@@ -14,6 +14,7 @@ async def check_database_connection(config: Configuration, bot: Bot) -> bool:
     while not await is_postgresql_db_alive(db_config=config.db):
         tries += 1
         delay_time: float = math.ceil(10 / tries)
+
         await bot.send_message(
             chat_id=config.telegram.CHAT_ID,
             message_thread_id=config.telegram.MESSAGE_THREAD_ID,
