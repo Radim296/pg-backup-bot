@@ -23,6 +23,11 @@ async def send_db_backup(config: Configuration):
             config=config
         )
 
+        filename: str = "backup.sql"
+
+        if config.archiver.SEND_AS_ARCHIVE:
+            filename += ".zip"
+
         await bot.send_document(
             document=BufferedInputFile(file=backup_bytes, filename="backup.sql"),
             chat_id=config.telegram.CHAT_ID,
