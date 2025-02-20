@@ -1,6 +1,8 @@
 import datetime
 from aiogram import Bot
 from aiogram.types import BufferedInputFile
+
+from app.archiver import make_archive
 from app.config import Configuration
 from app.db import get_database_backup
 from app.message_functions import check_database_connection
@@ -14,6 +16,11 @@ async def send_db_backup(config: Configuration):
     try:
         backup_bytes: bytes = await get_database_backup(
             db_config=config.db
+        )
+
+        backup_bytes: bytes = make_archive(
+            data=backup_bytes,
+            config=config
         )
 
         await bot.send_document(
