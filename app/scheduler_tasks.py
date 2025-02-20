@@ -29,7 +29,7 @@ async def send_db_backup(config: Configuration):
             filename += ".zip"
 
         await bot.send_document(
-            document=BufferedInputFile(file=backup_bytes, filename="backup.sql"),
+            document=BufferedInputFile(file=backup_bytes, filename=filename),
             chat_id=config.telegram.CHAT_ID,
             message_thread_id=config.telegram.MESSAGE_THREAD_ID,
             caption=f"💿 Backup - {datetime.datetime.now()}"
